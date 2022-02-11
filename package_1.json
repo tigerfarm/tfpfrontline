@@ -1,0 +1,28 @@
+{
+  "name": "tfpconversations",
+  "version": "1.2.1",
+  "description": "Node.js Express Conversations web application",
+  "engines": {
+    "node": "10.x"
+  },
+  "main": "webserver.js",
+  "scripts": {
+    "start": "node webserver.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "twilio": "^3.66.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tigerfarm/tfpconversations"
+  },
+  "keywords": [
+    "twilio",
+    "conversations",
+    "node",
+    "express",
+    "heroku"
+  ],
+  "license": "MIT"
+}
