@@ -1,8 +1,11 @@
+# -----------------
 # TFP ignores
 /node_modules/
 .DS_Store
 setheroku.sh
+customers.js
 
+# -----------------
 # Logs
 logs
 *.log
