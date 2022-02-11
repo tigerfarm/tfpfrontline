@@ -1,3 +1,7 @@
+// Either get values from .env file or from environment variables.
+// I use .env file on my localhost.
+// I use environment variables on Heroku.
+//
 require('dotenv').config();
 
 const _ = (varName, defaults) => process.env[varName] || defaults || null;
