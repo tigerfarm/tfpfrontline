@@ -39,46 +39,50 @@ const customers = [
     {
         customer_id: 1,
         display_name: 'Coleridge',
+        company_name: 'Poets Inc.',
         channels: [
-            {type: 'sms', value: '+16503790077'}
+            {type: 'sms', value: '+16505550077'}
         ],
         worker: 'lordbyron@example.com',
-        avatar: 'https://someassets-1403.twil.io/Coleridge.jpg'
+        avatar: 'https://abouttime-2357.twil.io/Coleridge.jpg'
     },
     {
         customer_id: 2,
         display_name: 'Percy Byshee Shelley',
+        company_name: 'Poets Inc.',
         channels: [
-            {type: 'sms', value: '+16503790007'}
+            {type: 'sms', value: '+16505550007'}
         ],
-        worker: 'tigerfarm@gmail.com',
-        avatar: 'https://someassets-1403.twil.io/Shelley.jpg'
+        worker: 'dave@example.com',
+        avatar: 'https://abouttime-2357.twil.io/Shelley.jpg'
     },
-    {
-        customer_id: 3,
+    {   customer_id: 3,
         display_name: 'John Keats',
+        company_name: 'Poets Inc.',
         channels: [
-            {type: 'sms', value: '+16508668893'}
+            {type: 'sms', value: '+16505558893'}
         ],
-        worker: 'tigerfarm@gmail.com',
-        avatar: 'https://someassets-1403.twil.io/Keats.jpg'
+        worker: 'dave@example.com',
+        avatar: 'https://abouttime-2357.twil.io/Keats.jpg'
     },
     {
         customer_id: 33,
         display_name: 'Dave here',
+        company_name: 'Tiger Farm Press',
         channels: [
             {type: 'sms', value: '+16505551111'}
         ],
-        worker: 'tigerfarm@gmail.com',
-        avatar: 'https://someassets-1403.twil.io/avatarMine1.jpg'
+        worker: 'dave@example.com',
+        avatar: 'https://abouttime-2357.twil.io/avatarMine1.jpg'
     },
     {
         customer_id: 34,
         display_name: 'Lord Byron',
+        company_name: 'Poets Inc.',
         channels: [
             {type: 'sms', value: '+16505552222'}
         ],
-        worker: 'coleague@twilio.com'
+        worker: 'coleague@example.com'
     }
 ];
 
