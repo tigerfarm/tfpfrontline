@@ -97,12 +97,16 @@ const compileTemplate = (template, customer) => {
     compiledTemplate = compiledTemplate.replace(/{{Author}}/, customer.worker);
     //
     // Added for Sandbox templates:
-    compiledTemplate = compiledTemplate.replace(/{{CompanyName}}/, customer.company_name);   // "Tiger Farm Press"
-    compiledTemplate = compiledTemplate.replace(/{{Code}}/, "123456");
+    compiledTemplate = compiledTemplate.replace(/{{CompanyName}}/, customer.company_name);
+    compiledTemplate = compiledTemplate.replace(/{{Code}}/, getRndInteger(100000, 999999));     // 6 digit random number.
     //
     return compiledTemplate;
 };
 
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
+// 
 // -----------------------------------------------------------------------------
 // Message templates
 //
