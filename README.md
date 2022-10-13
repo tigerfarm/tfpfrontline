@@ -45,8 +45,8 @@ Add your values in ".env", for: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILI
 After entering values in .env, start the application.
 ````
 $ cat .env
-TWILIO_ACCOUNT_SID=AC4983h9gj34t93pg9je0ge40j3930j34g
-TWILIO_AUTH_TOKEN=6589456jjk6598tjki98rtj4oidoidfk
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 TWILIO_SMS_NUMBER=+16505552222
 TWILIO_WHATSAPP_NUMBER=whatsapp:+xxxxxxxxxx
 
