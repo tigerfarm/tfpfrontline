@@ -1,0 +1,13 @@
+{
+  "name": "Sample Frontline Integration Web Server Application",
+  "description": "Sample Frontline Integration Service web application.",
+  "repository": "https://github.com/tigerfarm/tfpfrontlinebase",
+  "logo": "http://tigerfarmpress.com/images/topImgLeft.jpg",
+  "keywords": ["node", "express", "heroku", "Twilio", "Frontline", "integration"],
+    "env": {
+        "MASTER_ACCOUNT_AUTH_TOKEN": {
+            "description": "Your Twilio account auth token for Twilio request validation. You view it here: https://console.twilio.com",
+            "value": "TWILIO_AUTH_TOKEN"
+        }
+    }
+}
