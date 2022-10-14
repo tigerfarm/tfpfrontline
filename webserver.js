@@ -117,7 +117,7 @@ function parseValidateRequest(req, theData) {
     //
     // Validate the request.
     var twilioSignature = req.header('x-twilio-signature');
-    if (twilioSignature === "lhPWa1tr2uXDFmMvdg9LQOAvsmM=") {
+    if (twilioSignature === "abCDe1fg2hiJKlmnoP3quSTuvwx=") {
         // This can be a default signature to use when testing without the Frontline app.
         return(true);
     }

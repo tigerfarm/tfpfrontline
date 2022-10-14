@@ -1,99 +1,118 @@
-# Frontline Integration Service Example
+#### Application Files
 
-This README has information for using and implementing the application.
++ [webserver.js](webserver.js) : a NodeJS Express HTTP Server that serves processes client requests.
++ [customer.js](customer.js) : Customer data in JSON format.
++ [templates.js](templates.js) : Worker template data in JSON format, with functions to process and format the templates into messages.
 
 --------------------------------------------------------------------------------
-## Getting Started
+# Frontline Integration Service Example
 
-Getting started with GitHub tip, click the Code selector.
+This README has information for using and implementing the Frontline Integration Service web application.
+
+My Frontline [Setup and configurations](https://github.com/tigerfarm/work/tree/master/book/Frontline).
+
+Client worker apps:
++ Twilio Frontline mobile app.
++ Twilio Frontline web application you can use for testing:
+[Frontline web application](https://frontline.twilio.com/login)
+
+--------------------------------------------------------------------------------
+## Getting Started with this Repository
+
+Download the repositry files to your working directoy.
+From GitHub repositry page, click the Code selector button.
 + Click Download to download a zip file of the repository.
 + Unzip the file into a working directory.
-+ Go into the directory and list the files. You will see the ".env.example" file.
-+ If you are using Linus or Mac OS, use following directory listing command, "$ ls .env*".
-+ Make a copy of ".env.example" into ".env".
++ Go into the directory and list the files.
 
-Once unzipped and you have changed into the working repository unzipped directory,
-the following command should run the application.
+Start the web server.
 ````
-$ ls
-frontline-demo-service-main.zip
-/Users/dave/frontline $ unzip frontline-demo-service-main.zip
-...
-$ ls
-frontline-demo-service-main frontline-demo-service-main.zip
-$ rm *.zip
-$ cd frontline-demo-service-main/
-$ ls .env*
-.env.example
-$ cp .env.example .env
-$ ls .env*
-.env .env.example
-$ npm start
-> frontline-demo-service@0.10.0 start
-> node src/index.js
-/Users/dave/Projects/node_modules/twilio/lib/rest/Twilio.js:142
-    throw new Error('password is required');
-...
-$ cat .env
-TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-TWILIO_SMS_NUMBER=+xxxxxxxxxxx
-TWILIO_WHATSAPP_NUMBER=whatsapp:+xxxxxxxxxx
+$ node webserver.js 
++++ Start Frontline Integration Service Application web server, integration to CRM data.
++ From a browser, can check that the server is running.
++ Listening on port: 8080
 ````
-Add your values in ".env", for: TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_SMS_NUMBER.
+Once running, can use the following cURL commands to test the application.
 
-After entering values in .env, start the application.
+Sample Frontline requests.
+Note, "abCDe1fg2hiJKlmnoP3quSTuvwx=" is test signature that will allow be true.
+It matches the value in webserver.js.
 ````
-$ cat .env
-TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-TWILIO_AUTH_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-TWILIO_SMS_NUMBER=+16505552222
-TWILIO_WHATSAPP_NUMBER=whatsapp:+xxxxxxxxxx
+curl -X POST 'http://localhost:8080/frontline' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
+  --data-urlencode "Location=GetCustomersList" \
+  --data-urlencode "Worker=coleague@twilio.com"
 
-$ yarn run start
+curl -X POST 'http://localhost:8080/frontline' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
+  --data-urlencode "Location=GetCustomerDetailsByCustomerId" \
+  --data-urlencode "CustomerId=3"
 
-> frontline-demo-service@0.10.0 start
-> node src/index.js
+curl -X POST 'http://localhost:8080/frontline' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
+  --data-urlencode "Location=GetProxyAddress" \
+  --data-urlencode "channelName=sms"
 
-body-parser deprecated undefined extended: provide extended option src/create-app.js:18:21
-Application started at http://localhost:8081
+curl -X POST 'http://localhost:8080/frontline' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
+  --data-urlencode "Location=GetTemplatesByCustomerId" \
+  --data-urlencode "CustomerId=2"
 
- Your routes:
-/callbacks/conversations
-/callbacks/routing
-/callbacks/outgoing-conversation
-/callbacks/crm
-/callbacks/templates
-
- Next steps:
-- Use ngrok to expose port 8081
-- Configure the callback URLs on your Twilio Frontline Console: https://www.twilio.com/console/frontline
-
- Each callback URL is a combination of your ngrok domain + the route
-Read more: https://www.twilio.com/docs/frontline/nodejs-demo-quickstart#configure-the-twilio-frontline-integration-service
+* Confirm the templates are using another worker's data.
+curl -X POST 'http://localhost:8080/frontline' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
+  --data-urlencode "Location=GetTemplatesByCustomerId" \
+  --data-urlencode "CustomerId=3"
 ````
-The application is now running.
 
-Note, use "yarn run start" or "npm start" or "node src/index.js". All will start the application.
-Do an internet search if you have question regarding which way to start your application.
-Yarn is recommended for speed. There are pros and cons.
 
-Add code so that you can check that your server is running, by using a web browser.
-From the following add "app.get('/', ... });" to your src/index.js file.
+--------------------------------------------------------------------------------
+## Once Setup, Using Okta Admin to Manage Frontline Worker Access
+
+Log into [my Okta account](https://dev-12345678.okta.com/).
 ````
-// -----------------------------------------------------------------------------
-app.get('/', function (req, res) {
-    res.send('+ Frontline Integration Service Application');
-});
+Applications/Applications, click your application: Owl Press
+Under the "Assignments" option, left option "People", is the list your Okta users,
+    "Persons" assigned to this application.
+Click a Person.
+Click Profile.
+    You will see: User type/userType is "agent" (Configure Claims setting).
 
-app.listen(config.port, () => {
-  console.info(`Application started at http://localhost:${config.port}`);
-  logRoutes(config.port);
-});
+Under the "Sign On" option, is the SAML Signing Certificates information.
+In the table, beside: SHA-1, click Actions and select View IdP MetaData.
+    This will display the Frontline/Manage/SSO/Log in values,
+        + Frontline Identity provider issuer URL (entityID attribute):
+        http://www.okta.com/ex...d7
+        + Frontline SSO URL(SingleSignOnService attribute):
+        https://dev-12345678.okta.com/app/dev-12345678_owlpress_1/ex...d7/sso/saml
+        + Frontline X.509 Certificate (X509Certificate attribute)
+        MIID...pDw==
+
+Under the "General" option, is the Frontline SAML Settings,
+    That include your Frontline JBxxx id.
+    Table that should be:
+Attribute Statements
+Name    Name Format Value
+email   Basic       user.email
+roles   Basic       user.userType
 ````
-Now, when you run your application, in your web browser go to:
-use [http://localhost:8000/](http://localhost:8000/) 
-and you will see the message: + Frontline Integration Service Application.
+
+How to Configure Okta as a Frontline Identity Provider
+https://www.twilio.com/docs/frontline/sso/okta
+````
+1. Register a developer account at Okta
+2. Create an application on Okta
+3. Configure your Application (in Okta)
+4. Configure Claims (in Okta)
+5. Copy Application details: get information for Okta, to use in Twilio Frontline configurations.
+6. Assign Users to the Application
+7. Configure Frontline with your new SAML credentials: paste Okta information into your Twilio Frontline SSO configurations.
+````
 
 --------------------------------------------------------------------------------
 ## Using Frontline with the Twilio WhatsApp Sandbox
@@ -138,84 +157,5 @@ curl -X POST https://api.twilio.com/2010-04-01/Accounts/$MASTER_ACCOUNT_SID/Mess
 ````
 
 --------------------------------------------------------------------------------
-## Following is the Original Application Documentation
 
-This repository contains an example server-side web application that is required to use [Twilio Frontline](https://www.twilio.com/frontline).
-
-## Prerequisites
-- A Twilio Account. Don't have one? [Sign up](https://www.twilio.com/try-twilio) for free!
-- Follow the quickstart tutorial [here](https://www.twilio.com/docs/frontline/nodejs-demo-quickstart).
-- NodeJS (latest or LTS)
-- Yarn
-
-## How to start development service
-
-```shell script
-# install dependencies
-yarn
-
-# copy environment variables
-cp .env.example .env
-
-# run service
-yarn run start
-```
-
-## Environment variables
-
-```
-# Service variables
-PORT # default 5000
-
-# Twilio account variables
-TWILIO_ACCOUNT_SID=ACXXX...
-TWILIO_AUTH_TOKEN
-TWILIO_SSO_REALM_SID=JBXXX...
-
-# Variables for chat configuration
-TWILIO_SMS_NUMBER # Twilio number for incoming/outgoing SMS
-TWILIO_WHATSAPP_NUMBER # Twilio number for incoming/outgoing Whatsapp
-
-```
-
-## Setting up customers and mapping
-The customer data can be configured in ```src/routes/callbacks/crm.js```.
-
-Quick definition of customer's objects can be found below.
-
-### Map between customer address + worker identity pair.
-```js
-{
-    customerAddress: workerIdentity
-}
-```
-
-Example:
-```js
-const customersToWorkersMap = {
-    'whatsapp:+87654321': 'john@example.com'
-}
-```
-
-### Customers list
-Example:
-```js
-const customers = [
-    {
-        customer_id: 98,
-        display_name: 'Bobby Shaftoe',
-        channels: [
-            { type: 'email', value: 'bobby@example.com' },
-            { type: 'sms', value: '+123456789' },
-            { type: 'whatsapp', value: 'whatsapp:+123456789' }
-        ],
-        links: [
-            { type: 'Facebook', value: 'https://facebook.com', display_name: 'Social Media Profile' }
-        ],
-        worker: 'joe@example.com'
-    }
-];
-```
-
----
-Detailed information can be found in **Quickstart**, provided by Frontline team.
+Cheers...
