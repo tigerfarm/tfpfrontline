@@ -31,6 +31,8 @@ var app = express();
 const client = require('twilio');
 const authToken = process.env.MAIN_AUTH_TOKEN; // Your account Twilio Auth Token
 
+const testTwilioSignature = process.env.FRONTLINE_TWILIO_SIGNATURE;
+
 // Sender "From" values used to send conversation messages to SMS or WhatsApp users.
 const smsNumber = process.env.FRONTLINE_SMS_NUMBER;
 const whatsappNumber = "whatsapp:" + process.env.FRONTLINE_WHATSAPP_NUMBER;
@@ -117,7 +119,7 @@ function parseValidateRequest(req, theData) {
     //
     // Validate the request.
     var twilioSignature = req.header('x-twilio-signature');
-    if (twilioSignature === "abCDe1fg2hiJKlmnoP3quSTuvwx=") {
+    if (twilioSignature === testTwilioSignature) {
         // This can be a default signature to use when testing without the Frontline app.
         return(true);
     }
