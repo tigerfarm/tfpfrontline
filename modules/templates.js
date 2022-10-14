@@ -1,12 +1,12 @@
 // Module to be loaded into a node program.
 
 // Customer JSON data.
-const customerJson = require('./customers.js');
-const customers = customerJson.customers;
+const customerData = require('./customers');
 // 
 // -----------------------------------------------------------------------------
 // Message templates
 //
+const OPENER_SAMPLE = 'Sample customer data, Customer name: {{Name}}, company: {{CompanyName}}, Worker email address: {{Author}}.';
 const OPENER_NEXT_STEPS = 'Hello {{Name}} we have now processed your documents and would like to move you on to the next step. Drop me a message. {{Author}}.';
 const OPENER_NEW_PRODUCT = 'Hello {{Name}} we have a new product out which may be of interest to your business. Drop me a message. {{Author}}.';
 const OPENER_ON_MY_WAY = 'Just to confirm I am on my way to your office. {{Name}}.';
@@ -30,7 +30,6 @@ const SANDBOX_TEMPLATE_1 = 'Your {{CompanyName}} code is {{Code}}.';
 //          Example: Your Yummy Cupcakes Company order of 1 dozen frosted cupcakes has shipped and should be delivered on July 10, 2019. Details: http://cupcakes.example.com/
 // -----------------------------------
 // WhatsApp templates.
-//
 //  Note, customer JSON data is used to merge into the templates.
 //      const customers = [
 //      {
@@ -44,7 +43,7 @@ const SANDBOX_TEMPLATE_1 = 'Your {{CompanyName}} code is {{Code}}.';
 //          },
 //
 // -----------------------------------------------------------------------------
-// Add parameters into message templates.
+// Replace message template parameters with customer data.
 //
 const compileTemplate = (template, customer) => {
     let compiledTemplate = template;
@@ -65,21 +64,23 @@ function getRndInteger(min, max) {
 
 // -----------------------------------------------------------------------------
 exports.templates = function (theCustomerId) {
-    // console.log("+ Get templates for Customer Id = " + theCustomerId);
-    var customerDetails = customers.find(customer => String(customer.customer_id) === String(theCustomerId));
+    // console.log("+ Get customer data for Customer Id = " + theCustomerId);
+    const customerDetails = customerData.customerDetailsAll(theCustomerId);
     if (!customerDetails) {
-        console.log("404 " + "-- Error, customer id not found: " + theCustomerId);
-        exit(); // return();
+        console.log("-- Error in templates, customer id not found: " + theCustomerId);
+        return([]);
     }
+    // console.log("+ exports.templates customerDetails = " + JSON.stringify(customerDetails));
     // -------------------------------------------------------------------------
-    // Prepare templates into categories.
-    // WhatsApp pre-approved templates for out of session messages, have: ", whatsAppApproved: true"
+    // Replace message template parameters with customer data.
     const openersCategory = {
         display_name: 'Openers', // Category name
         templates: [
+            {content: compileTemplate(OPENER_SAMPLE, customerDetails)},
             {content: compileTemplate(OPENER_NEXT_STEPS, customerDetails)},
             {content: compileTemplate(OPENER_NEW_PRODUCT, customerDetails)},
-            {content: compileTemplate(OPENER_ON_MY_WAY, customerDetails), whatsAppApproved: true}, // Pre-approved WhatsApp template
+            // WhatsApp pre-approved templates for out of session messages, have: ", whatsAppApproved: true"
+            {content: compileTemplate(OPENER_ON_MY_WAY, customerDetails), whatsAppApproved: true},
             {content: compileTemplate(SANDBOX_TEMPLATE_1, customerDetails), whatsAppApproved: true}
         ]
     };

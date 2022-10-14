@@ -1,18 +1,27 @@
 #### Application Files
 
-+ [webserver.js](webserver.js) : a NodeJS Express HTTP Server that serves processes client requests.
-+ [customer.js](customer.js) : Customer data in JSON format.
-+ [templates.js](templates.js) : Worker template data in JSON format, with functions to process and format the templates into messages.
++ [webserver.js](webserver.js) : a NodeJS Express HTTP Server that processes client requests.
++ [modules/customer.js](modules/customer.js) : Customer data in JSON format, with methods to retrieve data formatted for Frontline app responses.
++ [modules/templates.js](modules/templates.js) : Template data in JSON format, with functions to process and format the templates into messages.
++ [moduleCustomersTest.js](moduleCustomersTest.js) : command line program for testing customer data queries.
++ [moduleTemplatesTest.js](moduleTemplatesTest.js) : command line program for testing template data queries.
++ [app.json](app.json) and [package.json](package.json) : for deploying to Heroku.
 
 --------------------------------------------------------------------------------
 # Frontline Integration Service Example
 
-This README has information for using and implementing the Frontline Integration Service web application.
+This README has information for using and implementing a Frontline Integration Service web application.
 
-My Frontline [Setup and configurations](https://github.com/tigerfarm/work/tree/master/book/Frontline).
+This application handles all HTTP requests from a Twilio Frontline app:
++ For a Frontline worker's customer list.
++ For a customer details.
++ For message templates to use when sending a message.
++ For an SMS Twilio phone number or Twilio WhatsApp senderid, to use when sending a message.
 
-Client worker apps:
-+ Twilio Frontline mobile app.
+My Frontline [set up steps and configurations](https://github.com/tigerfarm/work/tree/master/book/Frontline).
+
+For testing, you will need to use one of the Frontline client worker apps:
++ Twilio Frontline mobile app that is available of Google Play, and for Apple devices.
 + Twilio Frontline web application you can use for testing:
 [Frontline web application](https://frontline.twilio.com/login)
 
@@ -25,6 +34,13 @@ From GitHub repositry page, click the Code selector button.
 + Unzip the file into a working directory.
 + Go into the directory and list the files.
 
+Create environment variables. For example:
+````
+export MAIN_AUTH_TOKEN=...
+export FRONTLINE_TWILIO_SIGNATURE=abCDe1fg2hiJKlmnoP3quSTuvwx=
+export FRONTLINE_SMS_NUMBER=+16505551111
+export FRONTLINE_WHATSAPP_NUMBER:+14155551111
+````
 Start the web server.
 ````
 $ node webserver.js 
@@ -34,21 +50,24 @@ $ node webserver.js
 ````
 Once running, can use the following cURL commands to test the application.
 
-Sample Frontline requests.
-Note, "abCDe1fg2hiJKlmnoP3quSTuvwx=" is test signature that will allow be true.
-It matches the value in webserver.js.
+Folloing are sample Frontline requests.
+Note, the value of the environment value FRONTLINE_TWILIO_SIGNATURE,
+can be used as a test validation signature.
+When used in the header of an POST HTTP request, the request will be allowed.
 ````
+export FRONTLINE_TWILIO_SIGNATURE=abCDe1fg2hiJKlmnoP3quSTuvwx=
+
 curl -X POST 'http://localhost:8080/frontline' \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
   --data-urlencode "Location=GetCustomersList" \
-  --data-urlencode "Worker=coleague@twilio.com"
+  --data-urlencode "Worker=dave@example.com"
 
 curl -X POST 'http://localhost:8080/frontline' \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
   --data-urlencode "Location=GetCustomerDetailsByCustomerId" \
-  --data-urlencode "CustomerId=3"
+  --data-urlencode "CustomerId=2"
 
 curl -X POST 'http://localhost:8080/frontline' \
   --header 'Content-Type: application/x-www-form-urlencoded' \
@@ -69,7 +88,6 @@ curl -X POST 'http://localhost:8080/frontline' \
   --data-urlencode "Location=GetTemplatesByCustomerId" \
   --data-urlencode "CustomerId=3"
 ````
-
 
 --------------------------------------------------------------------------------
 ## Once Setup, Using Okta Admin to Manage Frontline Worker Access
@@ -142,7 +160,7 @@ Sending WhatsApp messages to a WhatsApp user, from the Twilio WhatsApp Sandbox s
 ````
 curl -X POST https://api.twilio.com/2010-04-01/Accounts/$MASTER_ACCOUNT_SID/Messages.json \
 --data-urlencode 'To=whatsapp:+16505552222' \
---data-urlencode 'From=whatsapp:+14155238886' \
+--data-urlencode 'From=whatsapp:+14155551111' \
 --data-urlencode 'Body=Your Twilio code is 1234561' \
 -u $MASTER_ACCOUNT_SID:$MASTER_AUTH_TOKEN
 ````
@@ -151,7 +169,7 @@ Sending SMS messages to a mobile phone number, from the Twilio WhatsApp Sandbox 
 ````
 curl -X POST https://api.twilio.com/2010-04-01/Accounts/$MASTER_ACCOUNT_SID/Messages.json \
 --data-urlencode 'To=+16505552222' \
---data-urlencode 'From=+14155238886' \
+--data-urlencode 'From=+14155551111' \
 --data-urlencode 'Body=Your Twilio code is 1234561' \
 -u $MASTER_ACCOUNT_SID:$MASTER_AUTH_TOKEN
 ````

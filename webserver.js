@@ -20,29 +20,36 @@ const express = require('express');
 const path = require('path');
 const url = require("url");
 
-// When deploying to Heroku, must use the keyword, "PORT".
-// This allows Heroku to override the value and use port 80. And when running locally can use other ports.
-const PORT = process.env.PORT || 8080;
-
 var app = express();
 
 // -----------------------------------------------------------------------------
+// Get environment variables.
+
 // Security: Twilio request validation.
 const client = require('twilio');
 const authToken = process.env.MAIN_AUTH_TOKEN; // Your account Twilio Auth Token
 
+// A signature string that can be used when testing.
+// + Suggest removing it when used in a production environment.
 const testTwilioSignature = process.env.FRONTLINE_TWILIO_SIGNATURE;
 
 // Sender "From" values used to send conversation messages to SMS or WhatsApp users.
 const smsNumber = process.env.FRONTLINE_SMS_NUMBER;
 const whatsappNumber = "whatsapp:" + process.env.FRONTLINE_WHATSAPP_NUMBER;
 
-// Load customer JSON data.
-const customerJson = require('./customers.js');
-const customers = customerJson.customers;
+// When deploying to Heroku, must use the keyword, "PORT".
+// This allows Heroku to override the value and use port 80. And when running locally can use other ports.
+const PORT = process.env.PORT || 8080;
 
-// Load templates module.
-var theTemplates = require('./templates.js');
+// -----------------------------------------------------------------------------
+// Load and set modules
+
+// Load customer data.
+const customerData = require('./modules/customers');
+const customers = customerData.customers;
+
+// Load templates.
+var theTemplates = require('./modules/templates');
 
 // -----------------------------------------------------------------------------
 // Global request variables.
@@ -113,6 +120,8 @@ function parseValidateRequest(req, theData) {
     }
     // -------------------------------------------------------------------------
     // Confirm the request is valid by using Twilio signature validation.
+    // Twilio cryptographically signs its requests.
+    //  Documentation: https://www.twilio.com/docs/usage/security#validating-requests
     // 
     // Compose the validation URL.
     validationUrl = 'https://' + req.header('host') + url.parse(req.url).pathname;
@@ -142,7 +151,7 @@ function parseValidateRequest(req, theData) {
 //  + SMS Twilio phone number or Twilio WhatsApp senderid
 //
 app.post("/frontline", function (req, res) {
-    console.log("----- POST request /callbacks/crm");
+    console.log("----- POST request /frontline");
     // console.log("++ customers: " + JSON.stringify(customers));
     req.on('data', function (data) {
         if (!parseValidateRequest(req, data)) {
@@ -153,9 +162,9 @@ app.post("/frontline", function (req, res) {
             console.log("++ Signature validation success.");
         }
         console.log("++ POST request URL: " + validationUrl);
-        console.log("++ Request body data:" + data + ":");
+        console.log("++ POST request body data:" + data + ":");
         // 
-        // Samples:
+        // Sample Frontline client reqeusts:
         // 
         // Worker's Customer list, GetCustomersList:
         // ++ POST request URL: https://tfpexample.herokuapp.com/frontline
@@ -172,7 +181,8 @@ app.post("/frontline", function (req, res) {
         // SMS Twilio phone number or Twilio WhatsApp senderid, GetProxyAddress:
         // ++ POST request URL: https://tfpexample.herokuapp.com/frontline
         // ++ Request body data:ChannelValue=%2B16505551111&Worker=dave%40example.com&CustomerId=3&ChannelType=sms&Location=GetProxyAddress:
-        //      ChannelValue, is the to-sender id, a phone number or WhatsApp sender id.
+        //      The ChannelType is used to select either a phone number or WhatsApp sender id.
+        //      The value is used when sending messages.
         // 
         // ---------------------------------------------------------------------
         // Handle each type of request.
@@ -181,47 +191,25 @@ app.post("/frontline", function (req, res) {
             case 'GetCustomerDetailsByCustomerId':
             {
                 console.log("++ GetCustomerDetailsByCustomerId: " + theCustomerId);
-                var customerDetails = customers.find(customer => String(customer.customer_id) === String(theCustomerId));
-                res.send({
-                    objects: {
-                        customer: {
-                            customer_id: customerDetails.customer_id,
-                            display_name: customerDetails.display_name,
-                            channels: customerDetails.channels,
-                            links: customerDetails.links,
-                            avatar: customerDetails.avatar,
-                            details: customerDetails.details
-                        }
-                    }
-                });
-                console.log('++ Success, customerDetails.display_name: ' + customerDetails.display_name);
+                const customerDetails = customerData.customerDetails(theCustomerId);
+                res.send({ objects: customerDetails });
+                console.log('++ Success, customerDetails.display_name: ' + customerDetails.customer.display_name);
                 return;
             }
             case 'GetCustomersList':
             {
                 console.log("++ GetCustomersList, for worker: " + theWorker);
-                // Get data into proper format, to respond.
-                var workerCustomers = customers.filter(customer => customer.worker === theWorker);
-                // console.log("++ workerCustomers: " + JSON.stringify(workerCustomers));
-                var workerCustomersList = workerCustomers.map(customer => ({
-                        display_name: customer.display_name,
-                        customer_id: customer.customer_id,
-                        avatar: customer.avatar
-                    }));
-                // console.log("++ Worker's Customers list: " + JSON.stringify(workerCustomersList));
-                res.send({
-                    objects: {
-                        customers: workerCustomersList
-                    }
-                });
-                console.log("++ Success, number of worker's customers: " + workerCustomers.length);
+                const workerCustomersList = customerData.workerCustomers(theWorker);
+                res.send({ objects: { customers: workerCustomersList } });
+                console.log("++ Success, number of worker's customers: " + workerCustomersList.length);
                 return;
             }
             case 'GetTemplatesByCustomerId':
             {
                 console.log('+ GetTemplates for Customer Id: ' + theCustomerId);
-                res.send( theTemplates.templates(theCustomerId) );
-                console.log('++ Success getting templates, sample template: ' + JSON.stringify(theTemplates.templates(theCustomerId)[1].templates[0].content));
+                const templatesList = theTemplates.templates(theCustomerId);
+                res.send( templatesList );
+                console.log('++ Success getting templates, sample template: ' + templatesList[0].templates[0].content);
                 return;
             }
             case 'GetProxyAddress':
