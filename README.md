@@ -156,7 +156,7 @@ Twilio console: Develop/Frontline/Manage/SSO/Log in
 + Okta value for: SSO URL
 + Okta value for: X.509 Certificate
 
-<img src="frontlineSsoOkta.jpg" width="600"/>
+<img src="frontlineSsoOkta1.jpg" width="600"/>
 
 ---------------------------------------------------
 Twilio console: Develop/Frontline/Manage/Callbacks
