@@ -92,6 +92,17 @@ curl -X POST 'http://localhost:8080/frontline' \
 --------------------------------------------------------------------------------
 ## Once Setup, Using Okta Admin to Manage Frontline Worker Access
 
+Steps to Configure [Okta as a Frontline Identity Provider](https://www.twilio.com/docs/frontline/sso/okta):
+````
+1. Register a developer account at Okta
+2. Create an application on Okta
+3. Configure your Application (in Okta)
+4. Configure Claims (in Okta)
+5. Copy Application details: get information for Okta, to use in Twilio Frontline configurations.
+6. Assign Users to the Application
+7. Configure Frontline with your new SAML credentials: paste Okta information into your Twilio Frontline SSO configurations.
+````
+
 Log into [my Okta account](https://dev-12345678.okta.com/).
 ````
 Applications/Applications, click your application: Owl Press
@@ -131,6 +142,21 @@ https://www.twilio.com/docs/frontline/sso/okta
 6. Assign Users to the Application
 7. Configure Frontline with your new SAML credentials: paste Okta information into your Twilio Frontline SSO configurations.
 ````
+
+<img src="FrontlineOktaSaml1a.jpg" width="400"/>
+
+--------------------------------------------------------------------------------
+## Frontline Twilio Console Configurations
+
+<img src="frontlineSsoOkta.jpg" width="400"/>
+
+<img src="FrontlineCallbacks.jpg" width="400"/>
+
+<img src="FrontlineConversationsDefaults.jpg" width="400"/>
+
+<img src="FrontlineMSintegration.jpg" width="400"/>
+
+<img src=FrontlineMSsenderPool.jpg" width="400"/>
 
 --------------------------------------------------------------------------------
 ## Using Frontline with the Twilio WhatsApp Sandbox
@@ -173,6 +199,12 @@ curl -X POST https://api.twilio.com/2010-04-01/Accounts/$MASTER_ACCOUNT_SID/Mess
 --data-urlencode 'Body=Your Twilio code is 1234561' \
 -u $MASTER_ACCOUNT_SID:$MASTER_AUTH_TOKEN
 ````
+
+--------------------------------------------------------------------------------
+## Links
+
+[Frontline application](https://github.com/twilio/frontline-demo-service)
+I've cloned and updated in this repository.
 
 --------------------------------------------------------------------------------
 
