@@ -160,7 +160,8 @@ Twilio console: Develop/Frontline/Manage/SSO/Log in
 
 ---------------------------------------------------
 Twilio console: Develop/Frontline/Manage/Callbacks
-+ Note, the 3 URLs are the same, which matches how the [webserver.js](webserver.js) handles requests.
++ Note, the 3 URLs have the same URI: "/frontline", which matches how the [webserver.js](webserver.js) handles requests.
+
 ````
 app.post("/frontline", function (req, res) {
 ...
