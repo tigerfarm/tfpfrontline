@@ -158,6 +158,7 @@ Twilio console: Develop/Frontline/Manage/SSO/Log in
 
 <img src="frontlineSsoOkta.jpg" width="600"/>
 
+---------------------------------------------------
 Twilio console: Develop/Frontline/Manage/Callbacks
 + Note, the 3 URLs are the same, which matches how the [webserver.js](webserver.js) handles requests.
 ````
@@ -168,31 +169,35 @@ app.post("/frontline", function (req, res) {
 
 <img src="FrontlineCallbacks.jpg" width="600"/>
 
+---------------------------------------------------
 Twilio console: Develop/Frontline/Overview
 + For configuration of: Conversations service name and Conversations service SID, 
 See Conversations configurations.
 
 <img src="FrontlineOverview.jpg" width="600"/>
 
-Twilio console: Develop/Conversations,Defaults:
-
-<img src="FrontlineConversationsDefaults.jpg" width="600"/>
-
+---------------------------------------------------
 Twilio console: Develop/Messaging Services, 
 click the Frontline Conversation Messaging service SID, for example: MG634319110a48b2e82f1a08247cd8f0ba
 
-Messaging service SID/Integration, enabled: Autocreate a Conversation
+Messaging service SID/Integration, enabled: Autocreate a Conversation.
 
 <img src="FrontlineMSintegration.jpg" width="600"/>
-
-Twilio console: Develop/Messaging Services, 
-click the Frontline Conversation Messaging service SID, for example: MG634319110a48b2e82f1a08247cd8f0ba
-
-<img src="FrontlineConversationsList.jpg" width="600"/>
 
 Messaging service SID/Sender Pool, with the Twilio phone number used to send Conversations SMS messages.
 
 <img src=FrontlineMSsenderPool.jpg" width="600"/>
+
+---------------------------------------------------
+Twilio console: Develop/Conversations/Defaults:
+
+<img src="FrontlineConversationsDefaults.jpg" width="600"/>
+
+Twilio console: Develop/Conversations,
++ Click the Frontline service, example SID: IS186702e405b74452a449d67b9265669f
++ Click Conversations
+
+<img src="FrontlineConversationsList.jpg" width="600"/>
 
 --------------------------------------------------------------------------------
 ## Using Frontline with the Twilio WhatsApp Sandbox
