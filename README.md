@@ -190,11 +190,16 @@ Messaging service SID/Sender Pool, with the Twilio phone number used to send Con
 <img src=FrontlineMSsenderPool.jpg" width="600"/>
 
 ---------------------------------------------------
-Twilio console: Develop/Conversations/Defaults:
+Twilio console: Develop/Conversations/Manage/Defaults:
++ Set to: Unlock, Handle Inbound Messages with Conversations.
+This allows inbound messages to use the Messaging Service setting to Autocreate a New Conversation.
++ Configure/Default Messaging Service, is the Messaging Service used for Frontline SMS messages.
++ Default Conversation Service, is the Conversations service SID used for Frontline conversations
+example SID: IS186702e405b74452a449d67b9265669f.
 
 <img src="FrontlineConversationsDefaults.jpg" width="600"/>
 
-Twilio console: Develop/Conversations,
+Twilio console: Develop/Conversations/Manage,
 + Click the Frontline service, example SID: IS186702e405b74452a449d67b9265669f
 + Click Conversations
 
