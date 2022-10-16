@@ -13,10 +13,10 @@
 This README has information for using and implementing a Frontline Integration Service web application.
 
 This application handles all HTTP requests from a Twilio Frontline app:
-+ For a Frontline worker's customer list.
-+ For a customer details.
-+ For message templates to use when sending a message.
-+ For an SMS Twilio phone number or Twilio WhatsApp senderid, to use when sending a message.
++ Frontline worker's customer list.
++ Customer's details.
++ Message templates to use when sending a message.
++ SMS Twilio phone number or Twilio WhatsApp senderid, to use when sending a message.
 
 My Frontline [set up steps and configurations](https://github.com/tigerfarm/work/tree/master/book/Frontline).
 
