@@ -12,18 +12,16 @@
 
 This README has information for using and implementing a Frontline Integration Service web application.
 
-This application handles all HTTP requests from a Twilio Frontline app:
+Frontline client worker apps for testing:
++ Twilio Frontline mobile app that is available of Google Play, and for Apple devices.
++ Twilio Frontline web application you can use for testing:
+[Frontline web application](https://frontline.twilio.com/login)
+
+This web application handles the HTTP requests from a Twilio Frontline client worker app:
 + Frontline worker's customer list.
 + Customer's details.
 + Message templates to use when sending a message.
 + SMS Twilio phone number or Twilio WhatsApp senderid, to use when sending a message.
-
-My Frontline [set up steps and configurations](https://github.com/tigerfarm/work/tree/master/book/Frontline).
-
-For testing, you will need to use one of the Frontline client worker apps:
-+ Twilio Frontline mobile app that is available of Google Play, and for Apple devices.
-+ Twilio Frontline web application you can use for testing:
-[Frontline web application](https://frontline.twilio.com/login)
 
 --------------------------------------------------------------------------------
 ## Getting Started with this Repository
@@ -48,15 +46,13 @@ $ node webserver.js
 + From a browser, can check that the server is running.
 + Listening on port: 8080
 ````
-Once running, can use the following cURL commands to test the application.
+Once running, use the following cURL commands to test the application.
 
-Folloing are sample Frontline requests.
+Following are sample Frontline app requests.
 Note, the value of the environment value FRONTLINE_TWILIO_SIGNATURE,
-can be used as a test validation signature.
-When used in the header of an POST HTTP request, the request will be allowed.
+is used as a test validation signature in the header of an HTTP request.
+The request will be allowed.
 ````
-export FRONTLINE_TWILIO_SIGNATURE=abCDe1fg2hiJKlmnoP3quSTuvwx=
-
 curl -X POST 'http://localhost:8080/frontline' \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
@@ -78,6 +74,12 @@ curl -X POST 'http://localhost:8080/frontline' \
 curl -X POST 'http://localhost:8080/frontline' \
   --header 'Content-Type: application/x-www-form-urlencoded' \
   --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
+  --data-urlencode "Location=GetProxyAddress" \
+  --data-urlencode "channelName=whatsapp"
+
+curl -X POST 'http://localhost:8080/frontline' \
+  --header 'Content-Type: application/x-www-form-urlencoded' \
+  --header 'x-twilio-signature: abCDe1fg2hiJKlmnoP3quSTuvwx=' \
   --data-urlencode "Location=GetTemplatesByCustomerId" \
   --data-urlencode "CustomerId=2"
 
@@ -92,7 +94,10 @@ curl -X POST 'http://localhost:8080/frontline' \
 --------------------------------------------------------------------------------
 ## Once Setup, Using Okta Admin to Manage Frontline Worker Access
 
-Steps to Configure [Okta as a Frontline Identity Provider](https://www.twilio.com/docs/frontline/sso/okta):
+To use a Frontline app, Frontline workers are added into an SSO management application system.
+I'm using Okta because there is Twilio Frontline documentation for Okta, and there is a free option that works for my requirements.
+
+Steps to Configure [Okta as a Frontline SSO Identity Provider](https://www.twilio.com/docs/frontline/sso/okta):
 ````
 1. Register a developer account at Okta
 2. Create an application on Okta
@@ -102,6 +107,8 @@ Steps to Configure [Okta as a Frontline Identity Provider](https://www.twilio.co
 6. Assign Users to the Application
 7. Configure Frontline with your new SAML credentials: paste Okta information into your Twilio Frontline SSO configurations.
 ````
+
+Following are some Okta dashboard location to view and manage Frontline information.
 
 Log into [my Okta account](https://dev-12345678.okta.com/).
 ````
@@ -148,6 +155,8 @@ Okta SAML setting:
 
 --------------------------------------------------------------------------------
 ## Frontline Twilio Console Configurations
+
+My Frontline [set up steps and configurations](https://github.com/tigerfarm/work/tree/master/book/Frontline).
 
 Twilio console: Develop/Frontline/Manage/SSO/Log in
 + Frontline Workspace ID
@@ -251,6 +260,8 @@ curl -X POST https://api.twilio.com/2010-04-01/Accounts/$MASTER_ACCOUNT_SID/Mess
 
 --------------------------------------------------------------------------------
 ## Links
+
+My Frontline [set up steps and configurations](https://github.com/tigerfarm/work/tree/master/book/Frontline).
 
 [Frontline application](https://github.com/twilio/frontline-demo-service)
 I've cloned and updated in this repository.
