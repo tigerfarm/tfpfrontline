@@ -144,7 +144,7 @@ https://www.twilio.com/docs/frontline/sso/okta
 ````
 Okta SAML setting:
 
-<img src="FrontlineOktaSaml1a.jpg" width="400"/>
+<img src="images/FrontlineOktaSaml1a.jpg" width="400"/>
 
 --------------------------------------------------------------------------------
 ## Frontline Twilio Console Configurations
@@ -156,7 +156,7 @@ Twilio console: Develop/Frontline/Manage/SSO/Log in
 + Okta value for: SSO URL
 + Okta value for: X.509 Certificate
 
-<img src="frontlineSsoOkta1.jpg" width="600"/>
+<img src="images/frontlineSsoOkta1.jpg" width="600"/>
 
 ---------------------------------------------------
 Twilio console: Develop/Frontline/Manage/Callbacks
@@ -168,14 +168,14 @@ app.post("/frontline", function (req, res) {
 }
 ````
 
-<img src="FrontlineCallbacks.jpg" width="600"/>
+<img src="images/FrontlineCallbacks.jpg" width="600"/>
 
 ---------------------------------------------------
 Twilio console: Develop/Frontline/Overview
 + For configuration of: Conversations service name and Conversations service SID, 
 See Conversations configurations.
 
-<img src="FrontlineOverview.jpg" width="600"/>
+<img src="images/FrontlineOverview.jpg" width="600"/>
 
 ---------------------------------------------------
 Twilio console: Develop/Messaging Services, 
@@ -183,7 +183,7 @@ click the Frontline Conversation Messaging service SID, for example: MG634319110
 
 Messaging service SID/Integration, enabled: Autocreate a Conversation.
 
-<img src="FrontlineMSintegration.jpg" width="600"/>
+<img src="images/FrontlineMSintegration.jpg" width="600"/>
 
 Messaging service SID/Sender Pool, with the Twilio phone number used to send Conversations SMS messages.
 
@@ -197,7 +197,7 @@ This allows inbound messages to use the Messaging Service setting to Autocreate 
 + Default Conversation Service, is the Conversations service SID used for Frontline conversations
 example SID: IS186702e405b74452a449d67b9265669f.
 
-<img src="FrontlineConversationsDefaults.jpg" width="600"/>
+<img src="images/FrontlineConversationsDefaults.jpg" width="600"/>
 
 Once Frontline conversations are flowing, use the following to list and view the conversations.
 
@@ -205,7 +205,7 @@ Twilio console: Develop/Conversations/Manage,
 + Click the Frontline service, example SID: IS186702e405b74452a449d67b9265669f
 + Click Conversations
 
-<img src="FrontlineConversationsList.jpg" width="600"/>
+<img src="images/FrontlineConversationsList.jpg" width="600"/>
 
 --------------------------------------------------------------------------------
 ## Using Frontline with the Twilio WhatsApp Sandbox
