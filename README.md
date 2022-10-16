@@ -199,6 +199,8 @@ example SID: IS186702e405b74452a449d67b9265669f.
 
 <img src="FrontlineConversationsDefaults.jpg" width="600"/>
 
+Once Frontline conversations are flowing, use the following to list and view the conversations.
+
 Twilio console: Develop/Conversations/Manage,
 + Click the Frontline service, example SID: IS186702e405b74452a449d67b9265669f
 + Click Conversations
